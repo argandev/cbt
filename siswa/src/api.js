@@ -2,9 +2,7 @@ import axios from 'axios'
 import {
   useAuthStore
 } from './stores/auth'
-import {
-  useToast
-} from 'primevue/usetoast'
+
 import router from './router'
 
 const API_ENDPOINT = 'http://localhost:8000/api'
