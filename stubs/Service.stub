@@ -1,0 +1,10 @@
+<?php
+namespace {NAME_SPACE};
+/**
+ * dadandev
+ * @class {CLASS_NAME}
+ */
+final class {CLASS_NAME}
+{
+    //service body
+}
