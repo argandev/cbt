@@ -42,7 +42,9 @@ const items = ref([
 ])
 
 const menu = ref()
-
+const logout = function(){
+    localStorage.removeItem('api_token_');
+}
 const toggle = (event) => {
     menu.value.toggle(event)
 }

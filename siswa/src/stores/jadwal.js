@@ -22,12 +22,13 @@ export const useJadwalStore = defineStore('jadwal_store', {
                     this.available = response.data;
                 }
             } catch (error) {
-                if(error.response.data.error) {
+                if (error.response.data.error) {
                     this.available = error.response.data;
 
                 }
             }
         },
+        //get jadwal sekarang
         async getJadwalSekarang() {
             try {
                 const response = await $api.get('/siswa/get_jadwal');

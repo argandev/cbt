@@ -11,6 +11,7 @@ import NotFound from '@/views/NotFoundView.vue'
 import {
   useAuthStore
 } from '@/stores/auth'
+import HomeViewVue from '@/views/HomeView.vue'
 
 
 const router = createRouter({
@@ -22,11 +23,17 @@ const router = createRouter({
   },
   history: createWebHistory(
     import.meta.env.BASE_URL),
-  routes: [{
-      path: '/login',
-
+  routes: [
+  
+    {
+      path: '/',
       component: BaseAuthViewVue,
-      children: [{
+      children: [
+        {
+          path : '/',
+          component : LoginView,
+        },
+        {
         path: "/login",
         name: 'login',
         component: LoginView
