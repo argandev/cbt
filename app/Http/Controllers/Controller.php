@@ -9,8 +9,4 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-
-    public function getSiswa(){
-        return request()->headers->get('data_siswa');
-    }
 }

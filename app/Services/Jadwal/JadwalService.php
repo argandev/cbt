@@ -20,9 +20,18 @@ final class JadwalService
         $this->jadwalRepository = new JadwalRepository();
         $this->bankSoalRepository = new BankSoalRepository();
     }
+    public function findById($id){
+        return $this->jadwalRepository->findById($id);
+    }
     public function getJadwalById(string $id)
     {
         return $this->jadwalRepository->findById($id);
+    }
+    public function extractSettings(string $jadwal_id) {
+        $jadwal = $this->jadwalRepository->findById($jadwal_id);
+        if ( $jadwal && ($settings = $jadwal->setting)) {
+            return json_decode($settings,true);
+        }
     }
     public function terdaftarDiJadwal($jadwal, $siswa)
     {

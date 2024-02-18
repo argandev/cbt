@@ -6,8 +6,10 @@ use App\Http\Controllers\Api\V2\UjianController;
 use App\Http\Middleware\SiswaLoginMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+Route::get('/',function(){
+    return [];
+});
 Route::post('/v2/siswa/login', [SiswaController::class,'login']);
-
 Route::middleware(SiswaLoginMiddleware::class)->group(function(){
     Route::get('/v2/siswa/me',[SiswaController::class,'me']);
     Route::get('/v2/siswa/get_jadwal',[JadwalController::class,'getJadwal']);
