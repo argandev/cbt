@@ -12,8 +12,8 @@ import 'primeicons/primeicons.css'
 import ToastService from 'primevue/toastservice'
 const app = createApp(App)
 import VueCountdown from '@chenfengyuan/vue-countdown';
-
-
+import Tooltip from 'primevue/tooltip';
+app.directive('tooltip', Tooltip);
 app.use(PrimeVue,{
     unstyled: true,
     pt : lara,

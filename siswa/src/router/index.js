@@ -12,6 +12,7 @@ import {
   useAuthStore
 } from '@/stores/auth'
 import HomeViewVue from '@/views/HomeView.vue'
+import IndexUjianViewVue from '@/views/Ujian/IndexUjianView.vue'
 
 
 const router = createRouter({
@@ -60,7 +61,12 @@ const router = createRouter({
       }, {
         path: '/konfirmasi/:jadwal_id',
         component: KonfirmasiViewVue,
-      }]
+      },
+    {
+      path : '/ujian/helloworld',
+      name : 'ruang_ujian',
+      component : IndexUjianViewVue,
+    }]
     },
     {
       path: '/:pathMatch(.*)*',
