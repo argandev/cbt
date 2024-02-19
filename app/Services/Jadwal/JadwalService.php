@@ -1,5 +1,6 @@
 <?php
 namespace App\Services\Jadwal;
+use App\Models\Jadwal;
 date_default_timezone_set("Asia/Jakarta");
 use App\Repositories\BankSoalRepository;
 use App\Repositories\JadwalRepository;
@@ -27,11 +28,13 @@ final class JadwalService
     {
         return $this->jadwalRepository->findById($id);
     }
-    public function extractSettings(string $jadwal_id) {
-        $jadwal = $this->jadwalRepository->findById($jadwal_id);
-        if ( $jadwal && ($settings = $jadwal->setting)) {
-            return json_decode($settings,true);
-        }
+    public function extractSettings(mixed $jadwal) {
+       if(is_string($jadwal) && !($jadwal instanceof Jadwal)) {
+        $jadwal = $this->jadwalRepository->findById($jadwal);
+       }
+       if ( $jadwal && ($settings = $jadwal->setting)) {
+        return json_decode($settings,true);
+    }
     }
     public function terdaftarDiJadwal($jadwal, $siswa)
     {
@@ -55,9 +58,9 @@ final class JadwalService
                 return [
                     'id' => $jadwal->id,
                     'lama_ujian' => $jadwal->lama_ujian,
-                    'siswa' => $siswa,
                     'waktu_mulai' => $jadwal->waktu_mulai,
                     'unix_time' => strtotime($jadwal->tanggal_mulai." ".$jadwal->waktu_mulai),
+                    'settings' => $this->extractSettings($jadwal),
                     'bank_soal' => [
                         'id' => $bankSoal->id,
                         'jumlah_soal' => $bankSoal->jumlah_soal,
