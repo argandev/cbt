@@ -15,4 +15,5 @@ Route::middleware(SiswaLoginMiddleware::class)->group(function(){
     Route::get('/v2/siswa/get_jadwal',[JadwalController::class,'getJadwal']);
     Route::post('/v2/siswa/detail_jadwal',[JadwalController::class,'detail_jadwal']);
     Route::post('/v2/siswa/ujian/konfirmasi',[UjianController::class,'konfirmasi']);
+    Route::get('/v2/siswa/ujian/jawaban_siswa',[UjianController::class,'getJawaban']);
 });

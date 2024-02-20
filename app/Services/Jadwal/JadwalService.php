@@ -100,22 +100,8 @@ final class JadwalService
                 if (!in_array($siswa['kelas_id'], $kelas)) {
                     continue;
                 }
-
             }
-            /**
-             * @todo cek apakah jadwal ini sudah di selesaikan apa belum
-             * @todo terus cek apakah ujian ini untuk jurusan umum atau tidak
-             * Kerjaken ku si Kuswandi
-             * isuk kudu ges beres
-             */
-
-
-
-
             $jadwals[] = $jadwal;
-
-
-
         }
 
         return $jadwals;
