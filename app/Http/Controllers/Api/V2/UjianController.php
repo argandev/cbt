@@ -86,6 +86,9 @@ class UjianController extends Controller
         if ( !$jadwalID ) {
             return ApiResponse::badRequest("Missing ID jadwal");
         }
+        /**
+         * mengambil jawal aktif hari ini
+         */
         $jadwals = $jadwalService->jadwalHariIni();
         $jadwalFound = array_filter($jadwals, function($item) use($jadwalID){
             return $item['id'] === $jadwalID;
@@ -97,19 +100,15 @@ class UjianController extends Controller
         }
         $bankSoal = $jadwalFound->bank_soal;
         $bank_soal_id = $bankSoal->id;
-
-        //jawaban siswa
         $setting = $jadwalService->extractSettings($jadwalFound);
-        /**
-         * mengambil pengaturan jadwal
-         */
         $jumlahSoalPg = ((intval($bankSoal->bobot['pilihan_ganda']) / 100) * $bankSoal->jumlah_soal);
-
-        /**
-         * Soal Pilihan ganda
-         */
-
         $soalPG = $soalPgService->getSoal($bank_soal_id,$setting['acak_opsi'], $setting['acak_soal'],$jumlahSoalPg);
+        $soalEssay = [];
+        $soals = [
+           1 => $soalPG,
+           2 => $soalEssay,
+        ];
+
         return ApiResponse::acceptWithData('berhasil mendapatkan data', [
             $soalPG,
         ]);
