@@ -1,4 +1,5 @@
 <?php
+namespace App\Services;
 abstract class AbstractSoalService
 {
     /**
@@ -8,7 +9,7 @@ abstract class AbstractSoalService
      * @param int $limit
      * @return mixed
      */
-    abstract function getSoal(string $bank_soal_id, bool $randomOpsi, bool $acakSoal = false, int $limit = 5);
+    abstract function getSoal(string $bank_soal_id, bool $acakSoal = false, int $limit = 5, bool $randomOpsi);
 
     /**
      * @param string $soal_id

@@ -60,7 +60,7 @@ final class JadwalService
                     'lama_ujian' => $jadwal->lama_ujian,
                     'waktu_mulai' => $jadwal->waktu_mulai,
                     'unix_time' => strtotime($jadwal->tanggal_mulai." ".$jadwal->waktu_mulai),
-                    'settings' => $this->extractSettings($jadwal),
+                    'settings' => $jadwal->setting,
                     'bank_soal' => [
                         'id' => $bankSoal->id,
                         'jumlah_soal' => $bankSoal->jumlah_soal,

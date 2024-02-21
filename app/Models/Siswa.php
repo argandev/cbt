@@ -11,6 +11,7 @@ class Siswa extends Model
 {
     use HasUuid;
     use HasFactory;
+
     protected $guarded = [];
     protected $hidden = [
         'password',

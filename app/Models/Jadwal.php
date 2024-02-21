@@ -11,6 +11,9 @@ class Jadwal extends Model
     use HasUuid;
     use HasFactory;
 
+    protected $casts=[
+        'setting' => 'array'
+    ];
     public function bank_soal(){
         return $this->belongsTo(BankSoal::class);
     }

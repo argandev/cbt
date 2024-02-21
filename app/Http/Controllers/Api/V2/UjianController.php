@@ -3,42 +3,45 @@
 namespace App\Http\Controllers\Api\V2;
 
 use App\Enums\JenisSoal;
+use App\Exceptions\DataTidakDitemukanException;
+use App\Exceptions\InsertDataGagalException;
 use App\Hellpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\BankSoal;
 use App\Models\Jadwal;
+use App\Models\JawabanSiswa;
 use App\Models\JawabanSoal;
 use App\Models\Siswa;
 use App\Models\Soal;
 use App\Repositories\JadwalRepository;
 use App\Services\Jadwal\JadwalService;
+use App\Services\JawabanSiswaService;
 use App\Services\SiswaUjianService;
+use App\Services\SoalEsayService;
 use App\Services\SoalPgServiceService;
+use App\Services\SoalService;
 use App\Services\TokenService;
 use App\Services\Ujian\UjianService;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
+use Mockery\Exception;
+use PhpParser\Node\Stmt\TryCatch;
+use PHPUnit\Framework\InvalidDataProviderException;
 use Ramsey\Uuid\Uuid;
+use Spatie\FlareClient\Api;
 
 class UjianController extends Controller
 {
+
+
     /**
-     * Undocumented function
-     *
-     * @return void
-     */
-    public function jawabanSiswa(Siswa $siswa, Jadwal $jadwal)
-    {
-        return $siswa;
-    }
-    /**
-     * Undocumented function
-     *
      * @param Request $request
      * @param JadwalService $jadwalService
      * @param TokenService $tokenService
      * @param SiswaUjianService $siswaUjianService
-     * @return void
+     * @return HttpResponse
+     * @throws \Throwable
      */
     public function konfirmasi(Request $request, JadwalService $jadwalService, TokenService $tokenService, SiswaUjianService $siswaUjianService) : \Illuminate\Http\Response {
         /**
@@ -54,7 +57,7 @@ class UjianController extends Controller
         if (!$jadwalID && !$jadwal) {
             ApiResponse::badRequest("Jadwal tidak di temukan");
         }
-        $pengaturanJadwal = $jadwalService->extractSettings($jadwal);
+        $pengaturanJadwal = $jadwal->setting;
         //cek apakah token di aktifkan atau tidak
         if ($pengaturanJadwal && ($pengaturanJadwal['token'] && $pengaturanJadwal['token'] == true)) {
             //cek token yang di inputkan siswa dengan token yang ada databse
@@ -70,48 +73,41 @@ class UjianController extends Controller
         }
         return ApiResponse::accept("SUKSESS");
     }
+
     /**
-     * Undocumented function
-     *
      * @param Request $request
-     * @param JadwalService $jadwalService
-     * @return void
+     * @param SoalService $soalService
+     * @return HttpResponse
      */
-    public function getJawaban( Request $request, JadwalService $jadwalService, SoalPgServiceService $soalPgService) : mixed
+    public function getJawaban( Request $request,SoalService $soalService, JawabanSiswaService $jawabanSiswaService)
     {
-        $siswa = $request->get('siswa_data');
 
+        $siswaID = $request->get('siswa_data')->id;
         $jadwalID = $request->get('jadwal_id');
-        $soalID = $request->get('soal_id');
-        if ( !$jadwalID ) {
-            return ApiResponse::badRequest("Missing ID jadwal");
-        }
-        /**
-         * mengambil jawal aktif hari ini
-         */
-        $jadwals = $jadwalService->jadwalHariIni();
-        $jadwalFound = array_filter($jadwals, function($item) use($jadwalID){
-            return $item['id'] === $jadwalID;
-        });
-        $jadwalFound = array_shift($jadwalFound);
-        //cek apakah bank soal aktif atau tidak
-        if( $jadwalFound->bank_soal->aktif == 0  ) {
-            return ApiResponse::badRequest("Bank soal tidak aktif");
-        }
-        $bankSoal = $jadwalFound->bank_soal;
-        $bank_soal_id = $bankSoal->id;
-        $setting = $jadwalService->extractSettings($jadwalFound);
-        $jumlahSoalPg = ((intval($bankSoal->bobot['pilihan_ganda']) / 100) * $bankSoal->jumlah_soal);
-        $soalPG = $soalPgService->getSoal($bank_soal_id,$setting['acak_opsi'], $setting['acak_soal'],$jumlahSoalPg);
-        $soalEssay = [];
-        $soals = [
-           1 => $soalPG,
-           2 => $soalEssay,
-        ];
+        try {
+            $soalService->giveSoals(
+                $request->get('siswa_data'),
+                $request->get('jadwal_id')
+            );
+            //setelah soal berhasil di berikan kepada siswa
+            //ambil lagi data nya untuk di tampilkan
 
-        return ApiResponse::acceptWithData('berhasil mendapatkan data', [
-            $soalPG,
-        ]);
+           $soal = $jawabanSiswaService->getJawaban(
+                $jadwalID,
+                $siswaID
+            );
+
+            return ApiResponse::acceptWithData(
+                'suksess',
+                $soal,
+            );
+        } catch (DataTidakDitemukanException|InsertDataGagalException $th) {
+            return ApiResponse::badRequest($th->getMessage());
+        } catch(\Throwable $e) {
+            return ApiResponse::accept($e->getMessage());
+        }
+
 
     }
+
 }

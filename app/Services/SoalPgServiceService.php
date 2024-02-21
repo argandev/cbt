@@ -2,12 +2,12 @@
 namespace App\Services;
 use App\Enums\JenisSoal;
 use App\Models\Soal;
-
+use App\Services\AbstractSoalService;
 /**
  * dadandev
  * @class SoalPgServiceService
  */
-final class SoalPgServiceService extends \AbstractSoalService
+final class SoalPgServiceService extends AbstractSoalService
 {
     /**
      * @param string $bank_soal_id
@@ -17,7 +17,7 @@ final class SoalPgServiceService extends \AbstractSoalService
      * @return array
      */
     //service body
-    public function getSoal( string $bank_soal_id,  bool $randomOpsi, bool $acakSoal = false ,int $limit = 5 ) {
+    public function getSoal( string $bank_soal_id, bool $acakSoal = false ,int $limit = 5 ,bool $randomOpsi) {
         $tampilPG = [];
 
         if ( $acakSoal ) {
@@ -25,18 +25,9 @@ final class SoalPgServiceService extends \AbstractSoalService
         } else {
             $soalPG = Soal::where(['bank_soal_id'=>$bank_soal_id,'tipe_soal'=>JenisSoal::SOAL_PG])->get();
         }
-        $soals = [];
-        foreach ( $soalPG as $key => $value ) {
-            $soals[$key] = $value;
-            if ( $randomOpsi ) {
-                $jawaban = $value->jawabans()->select(['id','jawaban'])->inRandomOrder()->get();
-            } else {
-                $jawaban = $value->jawabans()->orderBy('label')->select(['id','jawaban','label'])->get();
-            }
-            $soals[$key]['jawaban'] = $jawaban;
-        }
 
-        return $soals;
+
+        return $soalPG;
 
     }
 
