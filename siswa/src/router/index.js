@@ -63,7 +63,7 @@ const router = createRouter({
         component: KonfirmasiViewVue,
       },
     {
-      path : '/ujian/helloworld',
+      path : '/ujian/start/:jadwal_id/:soal_id',
       name : 'ruang_ujian',
       component : IndexUjianViewVue,
     }]

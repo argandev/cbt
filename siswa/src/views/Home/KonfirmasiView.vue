@@ -34,7 +34,11 @@ function konfirmasi() {
       loadingBtn.value = false
       if (response.data.error == false) {
         router.push({
-            name : 'ruang_ujian'
+            name : 'ruang_ujian',
+            params : {
+              jadwal_id : $route.params.jadwal_id,
+              soal_id : "2113123",
+            }
         })
       } 
     })
