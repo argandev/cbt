@@ -55,7 +55,7 @@ final class ApiResponse
      * @param array $data
      * @return Response
      */
-    public static function badRequest(string $message = '', $data = []): Response
+    public static function badRequest(string $message = '', array $data = []): Response
     {
         return response([
             'error' => true,

@@ -9,4 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 class JawabanSoal extends Model
 {
     use HasFactory,HasUuid;
+    protected $hidden = [
+        'benar'
+    ];
+
+    protected $casts = [
+        'bobot' => "array"
+    ];
+    public  function soal(){
+        return $this->belongsTo(Soal::class);
+    }
 }

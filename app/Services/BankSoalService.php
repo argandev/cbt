@@ -6,7 +6,7 @@ namespace App\Services;
  */
 final class BankSoalService
 {
-   public function getSoal(  ){
+   public function getSoal( ){
 
    }
 }

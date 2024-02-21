@@ -11,6 +11,10 @@ class BankSoal extends Model
     use HasUuid;
     use HasFactory;
 
+    protected $casts = [
+        'bobot' => 'array'
+    ];
+
     public function jadwal(){
         return $this->hasMany(Jadwal::class);
     }

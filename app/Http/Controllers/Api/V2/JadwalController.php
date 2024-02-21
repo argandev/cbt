@@ -9,7 +9,12 @@ use Illuminate\Http\Response;
 
 class JadwalController extends Controller
 {
-    public function detail_jadwal(Request $request, JadwalService $jadwalService)
+    /**
+     * @param Request $request
+     * @param JadwalService $jadwalService
+     * @return Response
+     */
+    public function detail_jadwal(Request $request, JadwalService $jadwalService) : Response
     {
         $siswa = $request->get('siswa_data');
         $jadwal_id = $request->jadwal_id;

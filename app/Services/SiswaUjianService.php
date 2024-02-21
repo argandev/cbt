@@ -54,7 +54,7 @@ final class SiswaUjianService
                 'jadwal_id' => $jadwal->id,
                 'waktu_start' => now(),
                 'waktu_end' => null,
-                'sisa_waktu' => null,
+                'sisa_waktu' => now()->addMinutes(30),
                 'status_ujian' => UjianSiswa::PROGRESS,
             ]);
         } catch (\Throwable $th) {
